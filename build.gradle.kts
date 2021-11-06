@@ -17,7 +17,7 @@ repositories {
 }
 dependencies {
     val kotlinxGroup = "org.jetbrains.kotlinx"
-    val kotlinxVersion = "1.5.3"
+    val kotlinxVersion = "1.5.2"
 
     val marianGroup = "com.github.m5rian"
 
