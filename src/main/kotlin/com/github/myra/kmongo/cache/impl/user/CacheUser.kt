@@ -5,6 +5,7 @@ import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.cache.impl.guild.CacheGuildEconomy
 import com.github.myra.kmongo.data.user.DbAchievements
 import com.github.myra.kmongo.data.user.DbUser
+import com.github.myraBot.diskord.Diskord
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -24,10 +25,10 @@ object CacheUser : Cache<DbUser>() {
     }
 
     override suspend fun create(value: String): DbUser {
-        val user = Mongo.bot.getUser(value)
+        val user = Diskord.getUser(value)
         return DbUser(
             userId = value,
-            name = user.name,
+            name = user.username,
             discriminator = user.discriminator,
             avatar = user.avatar,
             badges = mutableListOf(),

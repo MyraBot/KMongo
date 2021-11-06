@@ -9,7 +9,6 @@ import org.litote.kmongo.KMongo
 import org.litote.kmongo.getCollection
 
 object Mongo {
-    lateinit var bot: Application
     lateinit var connectionString: String
     lateinit var database: String
     lateinit var coroutineScope: CoroutineScope

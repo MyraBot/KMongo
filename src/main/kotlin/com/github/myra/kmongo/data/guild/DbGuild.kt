@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.github.m5rian.kotlingua.Kotlingua
 import com.github.m5rian.kotlingua.Lang
 import com.github.myra.kmongo.cache.impl.guild.*
-import com.github.myraBot.diskord.common.entities.Guild
+import com.github.myraBot.diskord.common.entities.guild.Guild
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.pull
 import org.litote.kmongo.push
