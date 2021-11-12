@@ -25,7 +25,7 @@ object CacheUser : Cache<DbUser>() {
     }
 
     override suspend fun create(value: String): DbUser {
-        val user = Diskord.getUser(value)
+        val user = Diskord.getUser(value)!!
         return DbUser(
             userId = value,
             name = user.username,
