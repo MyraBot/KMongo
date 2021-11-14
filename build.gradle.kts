@@ -1,4 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+val kotlinxCoroutines: String by project
+val kotlinxSerialization: String by project
+val kmongo: String by project
+val diskord: String by project
+val slasher: String by project
+val kotlingua: String by project
 
 plugins {
     kotlin("jvm") version "1.5.10"
@@ -8,7 +14,7 @@ plugins {
 
 group = "com.github.myraBot"
 val id = "KMongo"
-version = "0.5"
+version = "0.6"
 
 repositories {
     mavenCentral()
@@ -17,33 +23,17 @@ repositories {
 }
 dependencies {
     val kotlinxGroup = "org.jetbrains.kotlinx"
-    val kotlinxVersion = "1.5.2"
-
-    val marianGroup = "com.github.m5rian"
 
     // Coroutines
-    compileOnly("$kotlinxGroup:kotlinx-coroutines-core:$kotlinxVersion")
-    compileOnly("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxVersion")
+    compileOnly("$kotlinxGroup:kotlinx-coroutines-core:$kotlinxCoroutines")
+    compileOnly("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxCoroutines")
     // KMongo
-    compileOnly(group = "org.litote.kmongo", name = "kmongo", version = "4.3.0")
-    compileOnly(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.2.2")
+    compileOnly(group = "org.litote.kmongo", name = "kmongo", version = kmongo)
+    compileOnly(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
 
-    compileOnly(group = "com.github.myraBot", name = "Diskord", version = "0.63") // Discord Wrapper
-    compileOnly(group = "com.github.myraBot", name = "Slasher", version = "0.1") // Command handler
-    compileOnly(group = marianGroup, name = "Kotlingua", version = "0.5")
-
-
-    // Coroutines
-    testImplementation("$kotlinxGroup:kotlinx-coroutines-core:$kotlinxVersion")
-    testImplementation("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxVersion")
-    // KMongo
-    testImplementation(group = "org.litote.kmongo", name = "kmongo", version = "4.3.0")
-    testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.2.2")
-    // JDA
-    testImplementation(group = "net.dv8tion", name = "JDA", version = "4.3.0_324")
-    // Myra libraries
-    testImplementation(group = marianGroup, name = "Kommand-handler", version = "development") // Command handler
-    testImplementation(group = marianGroup, name = "Kotlingua", version = "0.5")
+    compileOnly(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
+    compileOnly(group = "com.github.myraBot", name = "Slasher", version = slasher) // Command handler
+    compileOnly(group = "com.github.m5rian", name = "Kotlingua", version = kotlingua)
 }
 
 /* publishing */
