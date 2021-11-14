@@ -5,7 +5,6 @@ import com.github.m5rian.kotlingua.Kotlingua
 import com.github.m5rian.kotlingua.Lang
 import com.github.myra.kmongo.cache.impl.guild.*
 import com.github.myraBot.diskord.common.entities.guild.Guild
-import com.github.myraBot.diskord.common.entities.guild.SimpleGuild
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.pull
 import org.litote.kmongo.push
@@ -37,15 +36,3 @@ suspend fun Guild.economy(): DbEconomy = CacheGuildEconomy.load(this.id)
 suspend fun Guild.suggestions(): DbSuggestions = CacheGuildSuggestions.load(this.id)
 suspend fun Guild.youtube(): DbYoutube = CacheGuildNotificationsYoutube.load(this.id)
 suspend fun Guild.twitch(): DbTwitch = CacheGuildNotificationsTwitch.load(this.id)
-
-
-suspend fun SimpleGuild.prefixes(): MutableList<String> = CacheGuild.load(this.id).prefixes
-suspend fun SimpleGuild.addPrefix(prefix: String) = CacheGuild.update(this.id, { it.prefixes.add(prefix) }, push(DbGuild::prefixes, prefix))
-suspend fun SimpleGuild.removePrefix(prefix: String) = CacheGuild.update(this.id, { it.prefixes.remove(prefix) }, pull(DbGuild::prefixes, prefix))
-suspend fun SimpleGuild.language(): Lang = CacheGuild.load(this.id).language
-
-suspend fun SimpleGuild.leveling(): DbLeveling = CacheGuildLeveling.load(this.id)
-suspend fun SimpleGuild.economy(): DbEconomy = CacheGuildEconomy.load(this.id)
-suspend fun SimpleGuild.suggestions(): DbSuggestions = CacheGuildSuggestions.load(this.id)
-suspend fun SimpleGuild.youtube(): DbYoutube = CacheGuildNotificationsYoutube.load(this.id)
-suspend fun SimpleGuild.twitch(): DbTwitch = CacheGuildNotificationsTwitch.load(this.id)

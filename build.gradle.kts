@@ -28,7 +28,7 @@ dependencies {
     compileOnly(group = "org.litote.kmongo", name = "kmongo", version = "4.3.0")
     compileOnly(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.2.2")
 
-    compileOnly(group = "com.github.myraBot", name = "Diskord", version = "0.55-DEVELOPMENT") // Discord Wrapper
+    compileOnly(group = "com.github.myraBot", name = "Diskord", version = "0.63") // Discord Wrapper
     compileOnly(group = "com.github.myraBot", name = "Slasher", version = "0.1") // Command handler
     compileOnly(group = marianGroup, name = "Kotlingua", version = "0.5")
 
