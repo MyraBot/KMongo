@@ -1,8 +1,10 @@
 package com.github.myra.kmongo.data.member
 
+import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.MemberCache
 import com.github.myraBot.diskord.common.entities.guild.Member
 import kotlinx.serialization.Serializable
+import org.litote.kmongo.eq
 import org.litote.kmongo.inc
 import org.litote.kmongo.setValue
 
@@ -28,6 +30,15 @@ val Member.messages: Long get() = MemberCache.load(this.guildId, this.id).messag
 suspend fun Member.increaseMessages() = MemberCache.update(this.guildId, this.id, { it.messages++ }, inc(DbMember::messages, 1))
 val Member.voiceCallTime: Long get() = MemberCache.load(this.guildId, this.id).voiceCallTime
 val Member.balance: Int get() = MemberCache.load(this.guildId, this.id).balance
+val Member.rank: Int
+    get() {
+        val members = Mongo.getAs<DbMember>("members")
+            .find(DbMember::guildId eq guildId)
+            .toMutableList()
+        members.sortWith(Comparator.comparing(DbMember::xp).reversed())
+        return members.indexOfFirst { it.userId === id }
+    }
+
 suspend fun Member.setBalance(balance: Int) = MemberCache.update(this.guildId, this.id, { it.balance = balance }, setValue(DbMember::balance, balance))
 suspend fun Member.addBalance(balance: Int) = MemberCache.update(this.guildId, this.id, { it.balance += balance }, inc(DbMember::balance, balance))
 suspend fun Member.removeBalance(balance: Int) = MemberCache.update(this.guildId, this.id, { it.balance -= balance }, inc(DbMember::balance, -balance))
