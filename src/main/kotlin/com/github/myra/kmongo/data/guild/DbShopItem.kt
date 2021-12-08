@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DbShopItem(
     val id: String,
-    val price: Long
+    val price: Int
 )
