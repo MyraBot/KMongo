@@ -34,6 +34,18 @@ dependencies {
     compileOnly(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
     compileOnly(group = "com.github.myraBot", name = "Slasher", version = slasher) // Command handler
     compileOnly(group = "com.github.m5rian", name = "Kotlingua", version = kotlingua)
+
+
+    // Coroutines
+    testImplementation("$kotlinxGroup:kotlinx-coroutines-core:$kotlinxCoroutines")
+    testImplementation("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxCoroutines")
+    // KMongo
+    testImplementation(group = "org.litote.kmongo", name = "kmongo", version = kmongo)
+    testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
+
+    testImplementation(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
+    testImplementation(group = "com.github.myraBot", name = "Slasher", version = slasher) // Command handler
+    testImplementation(group = "com.github.m5rian", name = "Kotlingua", version = kotlingua)
 }
 
 /* publishing */
