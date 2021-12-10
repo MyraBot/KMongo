@@ -34,5 +34,6 @@ suspend fun Guild.language(): Lang = CacheGuild.load(this.id).language
 suspend fun Guild.leveling(): DbLeveling = CacheGuildLeveling.load(this.id)
 suspend fun Guild.economy(): DbEconomy = CacheGuildEconomy.load(this.id)
 suspend fun Guild.suggestions(): DbSuggestions = CacheGuildSuggestions.load(this.id)
+suspend fun Guild.welcoming(): DbWelcoming = CacheGuildWelcoming.load(this.id)
 suspend fun Guild.youtube(): DbYoutube = CacheGuildNotificationsYoutube.load(this.id)
 suspend fun Guild.twitch(): DbTwitch = CacheGuildNotificationsTwitch.load(this.id)

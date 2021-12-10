@@ -1,6 +1,5 @@
 package com.github.myra.kmongo
 
-import com.github.myraBot.diskord.common.entities.Application
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +12,7 @@ object Mongo {
     lateinit var database: String
     lateinit var coroutineScope: CoroutineScope
     lateinit var defaultPrefix: String
+    lateinit var colour: String
 
     lateinit var mongo: MongoDatabase
 
@@ -24,7 +24,7 @@ object Mongo {
         return mongo.getCollection(collection)
     }
 
-    inline fun <reified T: Any> getAs(collection: String): MongoCollection<T> {
+    inline fun <reified T : Any> getAs(collection: String): MongoCollection<T> {
         return mongo.getCollection<T>(collection)
     }
 

@@ -34,6 +34,7 @@ object MongoUpdater {
         Mongo.get("guildsSuggestions").deleteMany(Filters.exists("_id"))
         Mongo.get("guildsYoutube").deleteMany(Filters.exists("_id"))
         Mongo.get("guildsTwitch").deleteMany(Filters.exists("_id"))
+        Mongo.get("guildsWelcoming").deleteMany(Filters.exists("_id"))
 
         val collection = KMongo.createClient(Mongo.connectionString).getDatabase("Myra").getCollection<Document>("guilds")
         for (run in 0..runs) {
@@ -105,6 +106,23 @@ object MongoUpdater {
                         .append("subscriptions", notiDoc.getList("twitch", String::class.java))
                     guildTwitchNotifications.add(twitch)
 
+                    val welcomeDoc = document["welcome", Document::class.java]
+                    val welcome = Document()
+                        .append("guildId", document.getString("guildId"))
+                        .append("channel", welcomeDoc.getString("welcomeChannel"))
+                        .append("directMessage", Document()
+                            .append("toggled", false)
+                            .append("message", welcomeDoc.getString("welcomeDirectMessage")))
+                        .append("embed", Document()
+                            .append("toggled", false)
+                            .append("message", welcomeDoc.getString("welcomeEmbedMessage"))
+                            .append("colour", welcomeDoc.getString("welcomeColour")))
+                        .append("image", Document()
+                            .append("toggled", false)
+                            .append("image", welcomeDoc.getString("welcomeImageBackground"))
+                            .append("font", "default"))
+                    guildWelcomingDocuments.add(welcome)
+
                     val guild = Document()
                         .append("guildId", document.getString("guildId"))
                         .append("prefixes", mutableListOf(document.getString("prefix")))
@@ -129,6 +147,7 @@ object MongoUpdater {
                             Mongo.get("guildsSuggestions").insertMany(guildSuggestions.toList())
                             Mongo.get("guildsYoutube").insertMany(guildYoutubeNotifications.toList())
                             Mongo.get("guildsTwitch").insertMany(guildTwitchNotifications.toList())
+                            Mongo.get("guildsWelcoming").insertMany(guildWelcomingDocuments.toList())
                         }
                     }, 5000)
 

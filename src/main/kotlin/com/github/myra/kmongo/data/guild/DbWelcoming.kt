@@ -4,27 +4,29 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DbWelcoming(
-    val channel: String?,
-    val directMessage: DbDirectMessage,
-    val embed: DbEmbed,
-    val image: DbImage
+        val guildId: String,
+        val channel: String?,
+        val directMessage: DbDirectMessage,
+        val embed: DbEmbed,
+        val image: DbImage
 )
 
 @Serializable
 data class DbDirectMessage(
-    val toggled: Boolean,
-    val message: String
+        val toggled: Boolean,
+        val message: String?
 )
 
 @Serializable
 data class DbEmbed(
-    val toggled: Boolean,
-    val message: String
+        val toggled: Boolean,
+        val message: String?,
+        val colour: String // TODO Make custom serializer
 )
 
 @Serializable
 data class DbImage(
-    val toggled: Boolean,
-    val image: String?,
-    val font: String
+        val toggled: Boolean,
+        val image: String?,
+        val font: String
 )
