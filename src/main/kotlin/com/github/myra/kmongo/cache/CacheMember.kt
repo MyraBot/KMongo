@@ -42,6 +42,7 @@ object MemberCache {
         val member = DbMember(
             guildId = guildMember.guildId,
             userId = guildMember.userId,
+            deleteAt = null,
             level = 0,
             xp = 0,
             messages = 0,

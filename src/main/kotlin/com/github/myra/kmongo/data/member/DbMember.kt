@@ -12,6 +12,7 @@ import org.litote.kmongo.setValue
 data class DbMember(
         val guildId: String,
         val userId: String,
+        val deleteAt: Long?,
         var level: Int,
         var xp: Long,
         var messages: Long,
