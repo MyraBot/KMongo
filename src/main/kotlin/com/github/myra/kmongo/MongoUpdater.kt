@@ -159,7 +159,7 @@ object MongoUpdater {
 
     }
 
-    fun convertFromJava() {
+    fun convertJavaUsers() {
         //Mongo.get("users").updateMany(EMPTY_BSON, setValue(KPrope<String>() "name", "test name"))
 
         val documentCount = KMongo.createClient(Mongo.connectionString).getDatabase("Myra").getCollection<Document>("users").countDocuments(Document())
@@ -190,7 +190,7 @@ object MongoUpdater {
                     val document = cursor.next()
 
                     val updatedDocument = Document()
-                        .append("_id", document.getString("userId"))
+                        .append("id", document.getString("userId"))
                         .append("name", document.getString("name"))
                         .append("discriminator", document.getString("discriminator"))
                         .append("avatar", document.getString("avatar"))
@@ -198,6 +198,7 @@ object MongoUpdater {
                         .append("birthday", null)
                         .append("achievements", DbAchievements())
 
+                    // Go through all guild member documents
                     document.entries.forEach {
                         if (it.key.matches("\\d*".toRegex())) {
                             val guild = it.value as Document
@@ -205,6 +206,7 @@ object MongoUpdater {
                                 Document()
                                     .append("guildId", it.key)
                                     .append("userId", document.getString("userId"))
+                                    .append("deleteAt", null)
                                     .append("level", guild.getInteger("level"))
                                     .append("xp", getLong(guild, "xp"))
                                     .append("messages", getLong(guild, "messages"))
@@ -217,12 +219,14 @@ object MongoUpdater {
                         }
                     }
 
+                    // Print out progress
                     val percent = (passedDocuments.toDouble() / documentCount) * 100
                     println("Updating Users... Status: ${percent.toInt()}% ($passedDocuments/$documentCount)")
 
+                    // If my own document comes put it on the top of the list
                     if (updatedDocument.getString("name") == "not set") continue
                     //Mongo.get("users").insertOne(updatedDocument)
-                    if (updatedDocument.getString("_id") == "639544573114187797") {
+                    if (updatedDocument.getString("id") == "639544573114187797") {
                         val toMutableList = docs.toMutableList()
                         docs.clear()
                         docs.add(updatedDocument)
@@ -236,9 +240,11 @@ object MongoUpdater {
                     println("waiting 5 secs")
                     Timer().schedule(object : TimerTask() {
                         override fun run() {
+                            Mongo.get("users").deleteMany(Filters.exists("_id"))
+                            Mongo.get("members").deleteMany(Filters.exists("_id"))
 
-                            Mongo.get("users").insertMany(docs.toList())
-                            Mongo.get("members").insertMany(membrs.toMutableList())
+                            Mongo.get("users").insertMany(docs.filter { !it.isNullOrEmpty() }.toList())
+                            Mongo.get("members").insertMany(membrs.filter { !it.isNullOrEmpty() }.toMutableList())
                         }
                     }, 5000)
 
