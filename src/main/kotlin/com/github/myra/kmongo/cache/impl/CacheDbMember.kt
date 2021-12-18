@@ -3,7 +3,6 @@ package com.github.myra.kmongo.cache.impl
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.data.guild.DbGuild
 import com.github.myra.kmongo.data.member.DbMember
-import com.mongodb.client.model.Filters
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -15,7 +14,7 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-object MemberCache {
+object CacheDbMember {
     private val mutex: Mutex = Mutex()
     private val executor: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
     private val schedulers: MutableMap<GuildMember, ScheduledFuture<*>> = mutableMapOf()
