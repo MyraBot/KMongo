@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.github.myra.kmongo.data.member
 
 import com.github.myra.kmongo.Mongo
