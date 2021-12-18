@@ -12,7 +12,7 @@ import org.litote.kmongo.setValue
 data class DbMember(
         val guildId: String,
         val userId: String,
-        val deleteAt: Long?,
+        var deleteAt: Long?,
         var level: Int,
         var xp: Long,
         var messages: Long,
@@ -21,7 +21,9 @@ data class DbMember(
         var dailyStreak: Int,
         var lastClaim: Long,
         val rankBackground: String
-)
+) {
+    suspend fun setDeletionDate(millis: Long) = MemberCache.update(this.guildId, this.userId, { it.deleteAt = millis }, setValue(DbMember::deleteAt, millis))
+}
 
 val Member.level: Int get() = MemberCache.load(this.guildId, this.id).level
 suspend fun Member.increaseLevel() = MemberCache.update(this.guildId, this.id, { it.level++ }, inc(DbMember::level, 1))
