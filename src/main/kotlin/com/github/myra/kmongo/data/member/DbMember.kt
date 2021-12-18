@@ -3,7 +3,7 @@
 package com.github.myra.kmongo.data.member
 
 import com.github.myra.kmongo.Mongo
-import com.github.myra.kmongo.cache.MemberCache
+import com.github.myra.kmongo.cache.impl.MemberCache
 import com.github.myraBot.diskord.common.entities.guild.Member
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.eq

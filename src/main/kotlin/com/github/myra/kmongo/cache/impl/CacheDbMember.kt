@@ -1,4 +1,4 @@
-package com.github.myra.kmongo.cache
+package com.github.myra.kmongo.cache.impl
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.data.guild.DbGuild
