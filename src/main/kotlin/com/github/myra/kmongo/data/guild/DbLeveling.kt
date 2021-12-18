@@ -1,6 +1,6 @@
 package com.github.myra.kmongo.data.guild
 
-import com.github.myra.kmongo.cache.impl.guild.CacheGuildLeveling
+import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildLeveling
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.eq
 import org.litote.kmongo.pull
@@ -17,10 +17,10 @@ data class DbLeveling(
         val roles: MutableList<DbLevelingRole>
 ) {
     suspend fun removeRole(id: String) =
-        CacheGuildLeveling.update(this.guildId, { dbLeveling -> dbLeveling.roles.removeIf { role -> role.id == id } }, pullByFilter(DbLeveling::roles, DbLevelingRole::id eq id))
+        CacheDbGuildLeveling.update(this.guildId, { dbLeveling -> dbLeveling.roles.removeIf { role -> role.id == id } }, pullByFilter(DbLeveling::roles, DbLevelingRole::id eq id))
 
-    suspend fun removeRole(role: DbLevelingRole) = CacheGuildLeveling.update(this.guildId, { it.roles.remove(role) }, pull(DbLeveling::roles, role))
-    suspend fun setChannel(id: String?) = CacheGuildLeveling.update(this.guildId, { it.channel = id }, setValue(DbLeveling::channel, id))
+    suspend fun removeRole(role: DbLevelingRole) = CacheDbGuildLeveling.update(this.guildId, { it.roles.remove(role) }, pull(DbLeveling::roles, role))
+    suspend fun setChannel(id: String?) = CacheDbGuildLeveling.update(this.guildId, { it.channel = id }, setValue(DbLeveling::channel, id))
 }
 
 @Serializable

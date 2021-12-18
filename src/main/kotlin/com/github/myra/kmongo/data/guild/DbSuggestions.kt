@@ -1,6 +1,6 @@
 package com.github.myra.kmongo.data.guild
 
-import com.github.myra.kmongo.cache.impl.guild.CacheGuildSuggestions
+import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildSuggestions
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.setValue
 
@@ -10,5 +10,5 @@ data class DbSuggestions(
         val toggled: Boolean,
         var channel: String?
 ) {
-    suspend fun setChannel(id: String?) = CacheGuildSuggestions.update(this.guildId, { it.channel = id }, setValue(DbSuggestions::channel, id))
+    suspend fun setChannel(id: String?) = CacheDbGuildSuggestions.update(this.guildId, { it.channel = id }, setValue(DbSuggestions::channel, id))
 }

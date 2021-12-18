@@ -2,9 +2,7 @@ package com.github.myra.kmongo.cache.impl.user
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
-import com.github.myra.kmongo.cache.impl.guild.CacheGuildEconomy
-import com.github.myra.kmongo.cache.impl.guild.CacheGuildNotificationsTwitch
-import com.github.myra.kmongo.data.guild.DbTwitch
+import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildEconomy
 import com.github.myra.kmongo.data.user.DbSocials
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -13,7 +11,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import kotlin.reflect.KProperty
 
-object CacheUserSocials : Cache<DbSocials>() {
+object CacheDbUserSocials : Cache<DbSocials>() {
     override val collectionName: String = "usersSocials"
     override val key: KProperty<*> = DbSocials::userId
 
@@ -33,6 +31,6 @@ object CacheUserSocials : Cache<DbSocials>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbSocials) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheGuildEconomy.mutex.withLock { Mongo.getAs<DbSocials>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbSocials>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
 }

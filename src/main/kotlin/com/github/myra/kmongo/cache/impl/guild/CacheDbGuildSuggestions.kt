@@ -3,7 +3,6 @@ package com.github.myra.kmongo.cache.impl.guild
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.data.guild.DbSuggestions
-import com.github.myra.kmongo.data.guild.DbTwitch
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -11,7 +10,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import kotlin.reflect.KProperty
 
-object CacheGuildSuggestions : Cache<DbSuggestions>() {
+object CacheDbGuildSuggestions : Cache<DbSuggestions>() {
     override val collectionName: String = "guildsSuggestions"
     override val key: KProperty<*> = DbSuggestions::guildId
 
@@ -32,6 +31,6 @@ object CacheGuildSuggestions : Cache<DbSuggestions>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbSuggestions) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheGuildEconomy.mutex.withLock { Mongo.getAs<DbSuggestions>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbSuggestions>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
 }

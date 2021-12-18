@@ -11,7 +11,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import kotlin.reflect.KProperty
 
-object CacheGuild : Cache<DbGuild>() {
+object CacheDbGuild : Cache<DbGuild>() {
     override val collectionName: String = "guilds"
     override val key: KProperty<*> = DbGuild::guildId
 

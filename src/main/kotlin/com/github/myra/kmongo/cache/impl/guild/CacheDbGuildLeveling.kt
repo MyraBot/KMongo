@@ -2,7 +2,6 @@ package com.github.myra.kmongo.cache.impl.guild
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
-import com.github.myra.kmongo.data.guild.DbEconomy
 import com.github.myra.kmongo.data.guild.DbLeveling
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -11,7 +10,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import kotlin.reflect.KProperty
 
-object CacheGuildLeveling : Cache<DbLeveling>() {
+object CacheDbGuildLeveling : Cache<DbLeveling>() {
     override val collectionName: String = "guildsLeveling"
     override val key: KProperty<*> = DbLeveling::guildId
 
@@ -35,7 +34,7 @@ object CacheGuildLeveling : Cache<DbLeveling>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbLeveling) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheGuildEconomy.mutex.withLock { Mongo.getAs<DbLeveling>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbLeveling>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
 
 }

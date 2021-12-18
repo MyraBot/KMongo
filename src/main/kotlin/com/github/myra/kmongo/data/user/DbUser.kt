@@ -1,7 +1,7 @@
 package com.github.myra.kmongo.data.user
 
-import com.github.myra.kmongo.cache.impl.user.CacheUser
-import com.github.myra.kmongo.cache.impl.user.CacheUserSocials
+import com.github.myra.kmongo.cache.impl.user.CacheDbUser
+import com.github.myra.kmongo.cache.impl.user.CacheDbUserSocials
 import com.github.myraBot.diskord.common.entities.User
 import kotlinx.serialization.Serializable
 
@@ -16,5 +16,5 @@ data class DbUser(
         val achievements: DbAchievements,
 )
 
-suspend fun User.birthday(): String? = CacheUser.load(this.id).birthday
-suspend fun User.socials(): DbSocials = CacheUserSocials.load(this.id)
+suspend fun User.birthday(): String? = CacheDbUser.load(this.id).birthday
+suspend fun User.socials(): DbSocials = CacheDbUserSocials.load(this.id)

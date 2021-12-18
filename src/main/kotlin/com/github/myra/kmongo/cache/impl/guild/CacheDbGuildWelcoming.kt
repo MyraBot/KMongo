@@ -10,7 +10,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import kotlin.reflect.KProperty
 
-object CacheGuildWelcoming : Cache<DbWelcoming>() {
+object CacheDbGuildWelcoming : Cache<DbWelcoming>() {
     override val collectionName: String = "guildsWelcoming"
     override val key: KProperty<*> = DbWelcoming::guildId
 

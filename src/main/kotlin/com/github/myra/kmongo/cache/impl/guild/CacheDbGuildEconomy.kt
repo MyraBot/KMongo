@@ -10,7 +10,7 @@ import org.litote.kmongo.eq
 import org.litote.kmongo.findOne
 import kotlin.reflect.KProperty
 
-object CacheGuildEconomy : Cache<DbEconomy>() {
+object CacheDbGuildEconomy : Cache<DbEconomy>() {
     override val collectionName: String = "guildsEconomy"
     override val key: KProperty<*> = DbEconomy::guildId
 
