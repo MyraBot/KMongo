@@ -3,6 +3,7 @@ package com.github.myra.kmongo.cache.impl
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.data.guild.DbGuild
 import com.github.myra.kmongo.data.member.DbMember
+import com.mongodb.client.model.Filters
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -36,6 +37,14 @@ object MemberCache {
         return cache.getOrPut(guildMember) {
             Mongo.getAs<DbMember>("members").findOne(and(DbMember::guildId eq guildId, DbMember::userId eq userId)) ?: addMemberToDb(guildMember)
         }
+    }
+
+    fun delete(guildId: String, userId: String) {
+        cache.remove(GuildMember(guildId, userId))
+        Mongo.getAs<DbMember>("members").deleteOne(and(
+            DbMember::guildId eq guildId,
+            DbMember::userId eq userId
+        ))
     }
 
     private fun addMemberToDb(guildMember: GuildMember): DbMember {

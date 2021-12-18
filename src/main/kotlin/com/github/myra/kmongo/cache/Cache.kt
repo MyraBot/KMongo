@@ -1,11 +1,9 @@
 package com.github.myra.kmongo.cache
 
 import com.github.myra.kmongo.Mongo
-import com.github.myra.kmongo.data.guild.DbGuild
+import com.github.myra.kmongo.data.member.DbMember
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
-import org.litote.kmongo.and
 import org.litote.kmongo.eq
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -33,6 +31,12 @@ abstract class Cache<T : Any> {
             cache.remove(value)
         }, 5, TimeUnit.MINUTES)
         schedulers[value] = scheduler
+    }
+
+
+    fun delete(key: String) {
+        cache.remove(key)
+        Mongo.get("members").deleteOne(this.key eq key)
     }
 
     abstract suspend fun load(value: String): T
