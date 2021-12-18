@@ -14,7 +14,7 @@ plugins {
 
 group = "com.github.myraBot"
 val id = "KMongo"
-version = "0.8"
+version = "0.9"
 
 repositories {
     mavenCentral()
