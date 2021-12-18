@@ -24,7 +24,7 @@ data class DbMember(
         var lastClaim: Long,
         val rankBackground: String
 ) {
-    suspend fun setDeletionDate(millis: Long) = MemberCache.update(this.guildId, this.userId, { it.deleteAt = millis }, setValue(DbMember::deleteAt, millis))
+    suspend fun setDeletionDate(millis: Long?) = MemberCache.update(this.guildId, this.userId, { it.deleteAt = millis }, setValue(DbMember::deleteAt, millis))
 }
 
 val Member.level: Int get() = MemberCache.load(this.guildId, this.id).level
