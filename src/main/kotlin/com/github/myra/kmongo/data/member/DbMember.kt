@@ -27,6 +27,7 @@ data class DbMember(
     suspend fun setDeletionDate(millis: Long?) = CacheDbMember.update(this.guildId, this.userId, { it.deleteAt = millis }, setValue(DbMember::deleteAt, millis))
 }
 
+suspend fun Member.setDeletionDate(millis: Long?) = CacheDbMember.update(this.guildId, this.id, { it.deleteAt = millis }, setValue(DbMember::deleteAt, millis))
 val Member.level: Int get() = CacheDbMember.load(this.guildId, this.id).level
 suspend fun Member.increaseLevel() = CacheDbMember.update(this.guildId, this.id, { it.level++ }, inc(DbMember::level, 1))
 val Member.xp: Long get() = CacheDbMember.load(this.guildId, this.id).xp
