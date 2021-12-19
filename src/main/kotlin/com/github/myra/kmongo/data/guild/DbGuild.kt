@@ -70,7 +70,7 @@ val Guild.balanceLeaderboard: List<Member>
 val Guild.dailyStreakLeaderboard: List<Member>
     get() {
         val members = getDatabaseMembers()
-            .filter { it.lastClaim + TimeUnit.HOURS.toMillis(24) < System.currentTimeMillis() }
+            .filter { System.currentTimeMillis() - it.lastClaim < TimeUnit.HOURS.toMillis(24) * 2 }
             .toMutableList()
         members.sortWith(Comparator.comparing(DbMember::dailyStreak).reversed())
         val guild = Diskord.getGuild(this.id)
