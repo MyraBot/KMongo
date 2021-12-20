@@ -125,7 +125,6 @@ object MongoUpdater {
 
                     val guild = Document()
                         .append("guildId", document.getString("guildId"))
-                        .append("prefixes", mutableListOf(document.getString("prefix")))
                         .append("language", Lang.ENGLISH_UNITED_KINGDOM.iso)
                         .append("premium", document.getBoolean("premium"))
                         .append("reactionRoles", document.getList("reactionRoles", Document::class.java))
@@ -243,8 +242,8 @@ object MongoUpdater {
                             Mongo.get("users").deleteMany(Filters.exists("_id"))
                             Mongo.get("members").deleteMany(Filters.exists("_id"))
 
-                            Mongo.get("users").insertMany(docs.filter { !it.isNullOrEmpty() }.toList())
-                            Mongo.get("members").insertMany(membrs.filter { !it.isNullOrEmpty() }.toMutableList())
+                            Mongo.get("users").insertMany(docs.filter { !it.isEmpty() }.toList())
+                            Mongo.get("members").insertMany(membrs.filter { !it.isEmpty() }.toMutableList())
                         }
                     }, 5000)
 

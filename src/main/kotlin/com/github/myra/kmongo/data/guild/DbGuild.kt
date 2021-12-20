@@ -13,15 +13,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.litote.kmongo.and
 import org.litote.kmongo.eq
-import org.litote.kmongo.pull
-import org.litote.kmongo.push
 import java.util.concurrent.TimeUnit
 
 @Suppress("ArrayInDataClass")
 @Serializable
 data class DbGuild(
         val guildId: String,
-        val prefixes: MutableList<String>,
         @JsonProperty("language")
         private val _language: String,
         val premium: Boolean,
@@ -34,9 +31,6 @@ data class DbGuild(
     val language: Lang get() = Kotlingua.getLanguageByIso(_language)!!
 }
 
-suspend fun Guild.prefixes(): MutableList<String> = CacheDbGuild.load(this.id).prefixes
-suspend fun Guild.addPrefix(prefix: String) = CacheDbGuild.update(this.id, { it.prefixes.add(prefix) }, push(DbGuild::prefixes, prefix))
-suspend fun Guild.removePrefix(prefix: String) = CacheDbGuild.update(this.id, { it.prefixes.remove(prefix) }, pull(DbGuild::prefixes, prefix))
 suspend fun Guild.language(): Lang = CacheDbGuild.load(this.id).language
 
 suspend fun Guild.leveling(): DbLeveling = CacheDbGuildLeveling.load(this.id)

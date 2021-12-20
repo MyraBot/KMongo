@@ -25,7 +25,6 @@ object CacheDbGuild : Cache<DbGuild>() {
     override suspend fun create(value: String): DbGuild {
         return DbGuild(
             guildId = value,
-            prefixes = mutableListOf("~"),
             _language = Lang.ENGLISH_UNITED_KINGDOM.iso,
             premium = false,
             unicorn = null,
