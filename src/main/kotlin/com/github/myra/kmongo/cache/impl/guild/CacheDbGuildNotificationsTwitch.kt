@@ -2,6 +2,7 @@ package com.github.myra.kmongo.cache.impl.guild
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
+import com.github.myra.kmongo.data.guild.DbLeveling
 import com.github.myra.kmongo.data.guild.DbTwitch
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -32,7 +33,12 @@ object CacheDbGuildNotificationsTwitch : Cache<DbTwitch>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbTwitch) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbTwitch>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        mutex.withLock { Mongo.getAs<DbTwitch>(collectionName).updateOne(and(key eq value), dbUpdate) }
+    }
+
+    override fun set(value: String, data: DbTwitch) {
+        this.cache[value] = data
+        Mongo.getAs<DbTwitch>(collectionName).findOneAndReplace(DbTwitch::guildId eq value, data)
     }
 
 }

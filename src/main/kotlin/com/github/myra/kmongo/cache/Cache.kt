@@ -1,7 +1,6 @@
 package com.github.myra.kmongo.cache
 
 import com.github.myra.kmongo.Mongo
-import com.github.myra.kmongo.data.member.DbMember
 import kotlinx.coroutines.sync.Mutex
 import org.bson.conversions.Bson
 import org.litote.kmongo.eq
@@ -44,4 +43,7 @@ abstract class Cache<T : Any> {
     abstract suspend fun create(value: String): T
 
     abstract suspend fun update(value: String, cacheUpdate: (cache: T) -> Unit, dbUpdate: Bson)
+
+    abstract fun set(value: String, data: T)
+
 }

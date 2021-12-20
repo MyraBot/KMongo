@@ -2,6 +2,7 @@ package com.github.myra.kmongo.cache.impl.guild
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
+import com.github.myra.kmongo.data.guild.DbTwitch
 import com.github.myra.kmongo.data.guild.DbYoutube
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -32,7 +33,12 @@ object CacheDbGuildNotificationsYoutube : Cache<DbYoutube>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbYoutube) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbYoutube>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        mutex.withLock { Mongo.getAs<DbYoutube>(collectionName).updateOne(and(key eq value), dbUpdate) }
+    }
+
+    override fun set(value: String, data: DbYoutube) {
+        this.cache[value] = data
+        Mongo.getAs<DbYoutube>(collectionName).findOneAndReplace(DbYoutube::guildId eq value, data)
     }
 
 }

@@ -4,6 +4,7 @@ import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildEconomy
 import com.github.myra.kmongo.data.user.DbSocials
+import com.github.myra.kmongo.data.user.DbUser
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -31,6 +32,12 @@ object CacheDbUserSocials : Cache<DbSocials>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbSocials) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbSocials>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        mutex.withLock { Mongo.getAs<DbSocials>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
+
+    override fun set(value: String, data: DbSocials) {
+        this.cache[value] = data
+        Mongo.getAs<DbSocials>(collectionName).findOneAndReplace(DbSocials::userId eq value, data)
+    }
+
 }

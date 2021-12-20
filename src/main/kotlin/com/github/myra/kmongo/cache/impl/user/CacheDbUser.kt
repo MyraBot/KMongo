@@ -3,6 +3,8 @@ package com.github.myra.kmongo.cache.impl.user
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildEconomy
+import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildWelcoming
+import com.github.myra.kmongo.data.guild.DbWelcoming
 import com.github.myra.kmongo.data.user.DbAchievements
 import com.github.myra.kmongo.data.user.DbUser
 import com.github.myraBot.diskord.Diskord
@@ -41,6 +43,12 @@ object CacheDbUser : Cache<DbUser>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbUser) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbUser>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        mutex.withLock { Mongo.getAs<DbUser>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
+
+    override fun set(value: String, data: DbUser) {
+        this.cache[value] = data
+        Mongo.getAs<DbUser>(collectionName).findOneAndReplace(DbUser::userId eq value, data)
+    }
+
 }

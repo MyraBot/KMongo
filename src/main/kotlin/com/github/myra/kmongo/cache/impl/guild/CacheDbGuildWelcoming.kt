@@ -36,4 +36,9 @@ object CacheDbGuildWelcoming : Cache<DbWelcoming>() {
         mutex.withLock { Mongo.getAs<DbWelcoming>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
 
+    override fun set(value: String, data: DbWelcoming) {
+        this.cache[value] = data
+        Mongo.getAs<DbWelcoming>(collectionName).findOneAndReplace(DbWelcoming::guildId eq value, data)
+    }
+
 }

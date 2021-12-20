@@ -3,6 +3,7 @@ package com.github.myra.kmongo.cache.impl.guild
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.data.guild.DbSuggestions
+import com.github.myra.kmongo.data.guild.DbYoutube
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -31,6 +32,12 @@ object CacheDbGuildSuggestions : Cache<DbSuggestions>() {
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbSuggestions) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
-        CacheDbGuildEconomy.mutex.withLock { Mongo.getAs<DbSuggestions>(collectionName).updateOne(and(key eq value), dbUpdate) }
+        mutex.withLock { Mongo.getAs<DbSuggestions>(collectionName).updateOne(and(key eq value), dbUpdate) }
     }
+
+    override fun set(value: String, data: DbSuggestions) {
+        this.cache[value] = data
+        Mongo.getAs<DbSuggestions>(collectionName).findOneAndReplace(DbSuggestions::guildId eq value, data)
+    }
+
 }

@@ -3,6 +3,7 @@ package com.github.myra.kmongo.cache.impl.guild
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.data.guild.DbEconomy
+import com.github.myra.kmongo.data.guild.DbGuild
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -24,7 +25,7 @@ object CacheDbGuildEconomy : Cache<DbEconomy>() {
     override suspend fun create(value: String): DbEconomy {
         return DbEconomy(
             guildId = value,
-            currency = "bla",
+            currency = "bla", // TODO
             shop = mutableListOf()
         )
     }
@@ -32,6 +33,11 @@ object CacheDbGuildEconomy : Cache<DbEconomy>() {
     override suspend fun update(value: String, cacheUpdate: (cache: DbEconomy) -> Unit, dbUpdate: Bson) {
         cacheUpdate.invoke(load(value))
         mutex.withLock { Mongo.getAs<DbEconomy>(collectionName).updateOne(and(key eq value), dbUpdate) }
+    }
+
+    override fun set(value: String, data: DbEconomy) {
+        this.cache[value] = data
+        Mongo.getAs<DbEconomy>(collectionName).findOneAndReplace(DbEconomy::guildId eq value, data)
     }
 
 }
