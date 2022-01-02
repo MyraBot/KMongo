@@ -18,7 +18,7 @@ data class DbMember(
         var level: Int,
         var xp: Long,
         var messages: Long,
-        val voiceCallTime: Long,
+        var voiceCallTime: Long,
         var balance: Int,
         var dailyStreak: Int,
         var lastClaim: Long,
@@ -35,6 +35,7 @@ suspend fun Member.addXp(xp: Int) = CacheDbMember.update(this.guildId, this.id, 
 val Member.messages: Long get() = CacheDbMember.load(this.guildId, this.id).messages
 suspend fun Member.increaseMessages() = CacheDbMember.update(this.guildId, this.id, { it.messages++ }, inc(DbMember::messages, 1))
 val Member.voiceCallTime: Long get() = CacheDbMember.load(this.guildId, this.id).voiceCallTime
+suspend fun Member.addVoiceTime(time: Long) = CacheDbMember.update(this.guildId, this.id, { it.voiceCallTime += time }, inc(DbMember::voiceCallTime, time))
 val Member.balance: Int get() = CacheDbMember.load(this.guildId, this.id).balance
 val Member.rank: Int
     get() {
