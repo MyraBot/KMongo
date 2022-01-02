@@ -2,9 +2,7 @@ package com.github.myra.kmongo.cache.impl.user
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
-import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildEconomy
 import com.github.myra.kmongo.data.user.DbSocials
-import com.github.myra.kmongo.data.user.DbUser
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
