@@ -6,7 +6,7 @@ import com.github.m5rian.kotlingua.Lang
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.impl.guild.*
 import com.github.myra.kmongo.data.member.DbMember
-import com.github.myraBot.diskord.Diskord
+import com.github.myraBot.diskord.common.Diskord
 import com.github.myraBot.diskord.common.entities.guild.Guild
 import com.github.myraBot.diskord.common.entities.guild.Member
 import kotlinx.coroutines.runBlocking
