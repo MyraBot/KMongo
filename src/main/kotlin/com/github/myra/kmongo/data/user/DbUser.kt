@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DbUser(
-        val userId: String,
+        val id: String,
         val name: String,
         val discriminator: String,
         val avatar: String,

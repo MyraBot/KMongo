@@ -2,12 +2,9 @@ package com.github.myra.kmongo.cache.impl.user
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
-import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildEconomy
-import com.github.myra.kmongo.cache.impl.guild.CacheDbGuildWelcoming
-import com.github.myra.kmongo.data.guild.DbWelcoming
 import com.github.myra.kmongo.data.user.DbAchievements
 import com.github.myra.kmongo.data.user.DbUser
-import com.github.myraBot.diskord.Diskord
+import com.github.myraBot.diskord.common.Diskord
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -17,19 +14,19 @@ import kotlin.reflect.KProperty
 
 object CacheDbUser : Cache<DbUser>() {
     override val collectionName: String = "users"
-    override val key: KProperty<*> = DbUser::userId
+    override val key: KProperty<*> = DbUser::id
 
     override suspend fun load(value: String): DbUser {
         loadCache(value)
         return cache.getOrPut(value) {
-            Mongo.getAs<DbUser>(collectionName).findOne(DbUser::userId eq value) ?: create(value)
+            Mongo.getAs<DbUser>(collectionName).findOne(DbUser::id eq value) ?: create(value)
         }
     }
 
     override suspend fun create(value: String): DbUser {
         val user = Diskord.getUser(value)!!
         return DbUser(
-            userId = value,
+            id = value,
             name = user.username,
             discriminator = user.discriminator,
             avatar = user.avatar,
@@ -48,7 +45,7 @@ object CacheDbUser : Cache<DbUser>() {
 
     override fun set(value: String, data: DbUser) {
         this.cache[value] = data
-        Mongo.getAs<DbUser>(collectionName).findOneAndReplace(DbUser::userId eq value, data)
+        Mongo.getAs<DbUser>(collectionName).findOneAndReplace(DbUser::id eq value, data)
     }
 
 }
