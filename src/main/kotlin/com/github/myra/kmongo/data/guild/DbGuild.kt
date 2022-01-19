@@ -44,22 +44,22 @@ val Guild.levelLeaderboard: List<Member>
     get() {
         val members = getDatabaseMembers()
         members.sortWith(Comparator.comparing(DbMember::level).reversed())
-        val guild = Diskord.getGuild(this.id)
-        return members.mapNotNull { runBlocking { guild?.getMember(it.userId) } }
+        val guild = runBlocking { Diskord.getGuild(this@levelLeaderboard.id).await() }
+        return members.mapNotNull { runBlocking { guild?.getMember(it.userId)?.awaitNonNull() } }
     }
 val Guild.voiceTimeLeaderboard: List<Member>
     get() {
         val members = getDatabaseMembers()
         members.sortWith(Comparator.comparing(DbMember::voiceCallTime).reversed())
-        val guild = Diskord.getGuild(this.id)
-        return members.mapNotNull { runBlocking { guild?.getMember(it.userId) } }
+        val guild = runBlocking { Diskord.getGuild(this@voiceTimeLeaderboard.id).await() }
+        return members.mapNotNull { runBlocking { guild?.getMember(it.userId)?.awaitNonNull() } }
     }
 val Guild.balanceLeaderboard: List<Member>
     get() {
         val members = getDatabaseMembers()
         members.sortWith(Comparator.comparing(DbMember::balance).reversed())
-        val guild = Diskord.getGuild(this.id)
-        return members.mapNotNull { runBlocking { guild?.getMember(it.userId) } }
+        val guild = runBlocking { Diskord.getGuild(this@balanceLeaderboard.id).await() }
+        return members.mapNotNull { runBlocking { guild?.getMember(it.userId)?.awaitNonNull() } }
     }
 val Guild.dailyStreakLeaderboard: List<Member>
     get() {
@@ -67,8 +67,8 @@ val Guild.dailyStreakLeaderboard: List<Member>
             .filter { System.currentTimeMillis() - it.lastClaim < TimeUnit.HOURS.toMillis(24) * 2 }
             .toMutableList()
         members.sortWith(Comparator.comparing(DbMember::dailyStreak).reversed())
-        val guild = Diskord.getGuild(this.id)
-        return members.mapNotNull { runBlocking { guild?.getMember(it.userId) } }
+        val guild = runBlocking { Diskord.getGuild(this@dailyStreakLeaderboard.id).await() }
+        return members.mapNotNull { runBlocking { guild?.getMember(it.userId)?.awaitNonNull() } }
     }
 
 private fun Guild.getDatabaseMembers(): MutableList<DbMember> = Mongo.getAs<DbMember>("members")
