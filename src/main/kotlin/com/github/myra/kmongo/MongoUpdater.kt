@@ -1,6 +1,5 @@
 package com.github.myra.kmongo
 
-import com.github.m5rian.kotlingua.Lang
 import com.github.myra.kmongo.data.user.DbAchievements
 import com.mongodb.CursorType
 import com.mongodb.client.model.Filters
@@ -127,12 +126,10 @@ object MongoUpdater {
 
                     val guild = Document()
                         .append("guildId", document.getString("guildId"))
-                        .append("language", Lang.ENGLISH_UNITED_KINGDOM.iso)
                         .append("premium", document.getBoolean("premium"))
                         .append("reactionRoles", document.getList("reactionRoles", Document::class.java))
                         .append("autoRoles", document.getList("autoRole", String::class.java))
                         .append("logChannel", document.getString("logChannel"))
-                        .append("commands", document.get("commands", Document::class.java))
                     guildDocuments.add(guild)
 
                     val percent = (passedDocuments.toDouble() / documentCount) * 100

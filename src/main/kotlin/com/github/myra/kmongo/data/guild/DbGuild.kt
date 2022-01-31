@@ -1,8 +1,5 @@
 package com.github.myra.kmongo.data.guild
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.github.m5rian.kotlingua.Kotlingua
-import com.github.m5rian.kotlingua.Lang
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.impl.guild.*
 import com.github.myra.kmongo.data.member.DbMember
@@ -19,19 +16,13 @@ import java.util.concurrent.TimeUnit
 @Serializable
 data class DbGuild(
         val guildId: String,
-        @JsonProperty("language")
-        private val _language: String,
         val premium: Boolean,
         val unicorn: String?,
         val reactionRoles: MutableList<DbReactionRole>,
         val autoRoles: MutableList<String>,
         val logChannel: String?,
     // val commands???
-) {
-    val language: Lang get() = Kotlingua.getLanguageByIso(_language)!!
-}
-
-suspend fun Guild.language(): Lang = CacheDbGuild.load(this.id).language
+)
 
 suspend fun Guild.leveling(): DbLeveling = CacheDbGuildLeveling.load(this.id)
 suspend fun Guild.economy(): DbEconomy = CacheDbGuildEconomy.load(this.id)
