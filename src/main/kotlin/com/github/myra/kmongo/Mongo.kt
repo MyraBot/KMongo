@@ -11,7 +11,6 @@ object Mongo {
     lateinit var connectionString: String
     lateinit var database: String
     lateinit var coroutineScope: CoroutineScope
-    lateinit var defaultPrefix: String
     lateinit var colour: String
 
     lateinit var mongo: MongoDatabase
