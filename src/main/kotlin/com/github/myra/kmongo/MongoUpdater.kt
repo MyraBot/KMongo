@@ -112,10 +112,12 @@ object MongoUpdater {
                         .append("channel", welcomeDoc.getString("welcomeChannel"))
                         .append("directMessage", Document()
                             .append("toggled", false)
-                            .append("message", welcomeDoc.getString("welcomeDirectMessage")))
+                            .append("message",
+                                    if (welcomeDoc.getString("welcomeDirectMessage") == "Welcome {user} to {server}! Enjoy your stay") null else welcomeDoc.getString("welcomeDirectMessage")))
                         .append("embed", Document()
                             .append("toggled", false)
-                            .append("message", welcomeDoc.getString("welcomeEmbedMessage"))
+                            .append("message",
+                                    if (welcomeDoc.getString("welcomeEmbedMessage") == "Welcome {user} to {server}! Enjoy your stay") null else welcomeDoc.getString("welcomeEmbedMessage"))
                             .append("colour", welcomeDoc.getString("welcomeColour")))
                         .append("image", Document()
                             .append("toggled", false)
