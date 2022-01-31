@@ -1,6 +1,8 @@
 package com.github.myra.kmongo.data.guild
 
+import com.github.myra.kmongo.ColorSerializer
 import kotlinx.serialization.Serializable
+import java.awt.Color
 
 @Serializable
 data class DbWelcoming(
@@ -21,7 +23,7 @@ data class DbDirectMessage(
 data class DbEmbed(
         val toggled: Boolean,
         val message: String?,
-        val colour: String // TODO Make custom serializer
+       @Serializable(with = ColorSerializer::class) val colour: Color?
 )
 
 @Serializable
