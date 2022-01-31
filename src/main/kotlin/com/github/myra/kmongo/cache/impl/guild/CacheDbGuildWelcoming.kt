@@ -2,7 +2,10 @@ package com.github.myra.kmongo.cache.impl.guild
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
-import com.github.myra.kmongo.data.guild.*
+import com.github.myra.kmongo.data.guild.DbDirectMessage
+import com.github.myra.kmongo.data.guild.DbEmbed
+import com.github.myra.kmongo.data.guild.DbImage
+import com.github.myra.kmongo.data.guild.DbWelcoming
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
 import org.litote.kmongo.and
@@ -26,7 +29,7 @@ object CacheDbGuildWelcoming : Cache<DbWelcoming>() {
             guildId = value,
             channel = null,
             directMessage = DbDirectMessage(false, null),
-            embed = DbEmbed(false, null, Mongo.colour),
+            embed = DbEmbed(false, null, null),
             image = DbImage(false, null, "default")
         )
     }
