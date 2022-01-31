@@ -2,7 +2,6 @@ package com.github.myra.kmongo.cache.impl.guild
 
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
-import com.github.myra.kmongo.data.guild.DbTwitch
 import com.github.myra.kmongo.data.guild.DbYoutube
 import kotlinx.coroutines.sync.withLock
 import org.bson.conversions.Bson
@@ -18,7 +17,7 @@ object CacheDbGuildNotificationsYoutube : Cache<DbYoutube>() {
     override suspend fun load(value: String): DbYoutube {
         loadCache(value)
         return cache.getOrPut(value) {
-            Mongo.getAs<DbYoutube>(collectionName).findOne(DbYoutube::guildId eq value) ?: create(value)
+            Mongo.getAs<DbYoutube>(collectionName).findOne(key eq value) ?: create(value)
         }
     }
 
@@ -28,7 +27,7 @@ object CacheDbGuildNotificationsYoutube : Cache<DbYoutube>() {
             channel = null,
             subscriptions = mutableListOf(),
             message = null
-        )
+        ).also { Mongo.getAs<DbYoutube>(collectionName).insertOne(it) }
     }
 
     override suspend fun update(value: String, cacheUpdate: (cache: DbYoutube) -> Unit, dbUpdate: Bson) {
