@@ -1,6 +1,5 @@
 package com.github.myra.kmongo.cache.impl.guild
 
-import com.github.m5rian.kotlingua.Lang
 import com.github.myra.kmongo.Mongo
 import com.github.myra.kmongo.cache.Cache
 import com.github.myra.kmongo.data.guild.DbGuild
