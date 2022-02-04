@@ -1,6 +1,7 @@
 package com.github.myra.kmongo.data.guild
 
-import com.github.myra.kmongo.ColorSerializer
+import com.github.myra.kmongo.ColorHexSerializer
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.awt.Color
 
@@ -23,7 +24,7 @@ data class DbDirectMessage(
 data class DbEmbed(
     val toggled: Boolean,
     val message: String?,
-    @Serializable(with = ColorSerializer::class) val colour: Color?
+    @Serializable(with = ColorHexSerializer::class) val colour: Color?
 )
 
 @Serializable
