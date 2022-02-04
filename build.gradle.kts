@@ -2,19 +2,20 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val kotlinxCoroutines: String by project
 val kotlinxSerialization: String by project
 val kmongo: String by project
+val kmongoSerialization: String by project
 val diskord: String by project
 val slasher: String by project
 val kotlingua: String by project
 
 plugins {
     kotlin("jvm") version "1.5.10"
-    kotlin("plugin.serialization") version "1.5.30"
+    kotlin("plugin.serialization") version "1.6.10"
     `maven-publish`
 }
 
 group = "com.github.myraBot"
 val id = "KMongo"
-version = "0.14"
+version = "0.14-snap-3"
 
 repositories {
     mavenCentral()
@@ -35,7 +36,8 @@ dependencies {
     compileOnly("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxCoroutines")
     // KMongo
     compileOnly(group = "org.litote.kmongo", name = "kmongo", version = kmongo)
-    compileOnly(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
+    compileOnly("org.litote.kmongo", "kmongo-coroutine-serialization", kmongo)
+    //compileOnly(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
 
     compileOnly(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
 
@@ -45,7 +47,8 @@ dependencies {
     testImplementation("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxCoroutines")
     // KMongo
     testImplementation(group = "org.litote.kmongo", name = "kmongo", version = kmongo)
-    testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
+    testImplementation("org.litote.kmongo", "kmongo-coroutine-serialization",kmongo)
+    //testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
 
     testImplementation(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
 }
