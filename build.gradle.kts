@@ -34,22 +34,16 @@ dependencies {
     // Coroutines
     compileOnly("$kotlinxGroup:kotlinx-coroutines-core:$kotlinxCoroutines")
     compileOnly("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxCoroutines")
-    // KMongo
-    compileOnly(group = "org.litote.kmongo", name = "kmongo", version = kmongo)
-    compileOnly("org.litote.kmongo", "kmongo-coroutine-serialization", kmongo)
-    //compileOnly(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
 
+    compileOnly("org.litote.kmongo", "kmongo-coroutine-serialization", kmongo) // KMongo
     compileOnly(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
 
 
     // Coroutines
     testImplementation("$kotlinxGroup:kotlinx-coroutines-core:$kotlinxCoroutines")
     testImplementation("$kotlinxGroup:kotlinx-coroutines-jdk8:$kotlinxCoroutines")
-    // KMongo
-    testImplementation(group = "org.litote.kmongo", name = "kmongo", version = kmongo)
-    testImplementation("org.litote.kmongo", "kmongo-coroutine-serialization",kmongo)
-    //testImplementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = kotlinxSerialization)
 
+    testImplementation("org.litote.kmongo", "kmongo-coroutine-serialization",kmongo) // KMongo
     testImplementation(group = "com.github.myraBot", name = "Diskord", version = diskord) // Discord Wrapper
 }
 
