@@ -1,15 +1,11 @@
 package com.github.myra.kmongo
 
-import com.mongodb.client.MongoCollection
-import com.mongodb.client.MongoDatabase
-import com.mongodb.client.internal.MongoDatabaseImpl
-import de.undercouch.bson4jackson.serializers.BsonSerializers
+import com.mongodb.reactivestreams.client.MongoCollection
+import com.mongodb.reactivestreams.client.MongoDatabase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.serialization.serializer
 import org.bson.Document
-import org.bson.conversions.Bson
-import org.litote.kmongo.KMongo
-import org.litote.kmongo.getCollection
+import org.litote.kmongo.reactivestreams.KMongo
+import org.litote.kmongo.reactivestreams.getCollectionOfName
 import org.litote.kmongo.serialization.registerSerializer
 
 object Mongo {
@@ -30,7 +26,7 @@ object Mongo {
     }
 
     inline fun <reified T : Any> getAs(collection: String): MongoCollection<T> {
-        return mongo.getCollection<T>(collection)
+        return mongo.getCollectionOfName(collection)
     }
 
     fun connectionStringIsInitialized(): Boolean {
