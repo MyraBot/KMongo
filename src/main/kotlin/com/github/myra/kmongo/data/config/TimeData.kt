@@ -1,11 +1,9 @@
 package com.github.myra.kmongo.data.config
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
 
 @Suppress("unused")
 data class TimeData(
-        @JsonProperty("youtube refresh")
-        val youtubeRefresh: Long,
-        @JsonProperty("twitch refresh")
-        val twitchRefresh: Long
+    @SerialName("youtube refresh") val youtubeRefresh: Long,
+    @SerialName("twitch refresh") val twitchRefresh: Long
 )
