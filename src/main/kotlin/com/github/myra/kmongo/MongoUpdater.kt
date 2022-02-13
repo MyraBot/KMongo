@@ -57,7 +57,7 @@ object MongoUpdater {
                             economyShop.add(
                                 Document()
                                     .append("id", it.key)
-                                    .append("price", getLong(value, "price"))
+                                    .append("price", value.getInteger("price"))
                             )
                         }
                         val economy = Document()
