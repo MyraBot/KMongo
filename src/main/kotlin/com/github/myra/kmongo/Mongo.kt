@@ -1,5 +1,7 @@
 package com.github.myra.kmongo
 
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
 import com.mongodb.reactivestreams.client.MongoCollection
 import com.mongodb.reactivestreams.client.MongoDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +19,10 @@ object Mongo {
     lateinit var mongo: MongoDatabase
 
     fun connect() {
-        mongo = KMongo.createClient(connectionString).getDatabase(database)
+        val settings = MongoClientSettings.builder().apply {
+            applyConnectionString(ConnectionString(connectionString))
+        }.build()
+        mongo = KMongo.createClient(settings).getDatabase(database)
         registerSerializer(ColorHexSerializer)
     }
 
