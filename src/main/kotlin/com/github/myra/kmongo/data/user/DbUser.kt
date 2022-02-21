@@ -8,9 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DbUser(
     val id: String,
-    val name: String,
-    val discriminator: String,
-    val avatar: String,
     val badges: MutableList<String>,
     val birthday: String?,
     val achievements: DbAchievements,

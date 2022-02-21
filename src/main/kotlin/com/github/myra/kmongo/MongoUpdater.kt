@@ -191,9 +191,6 @@ object MongoUpdater {
 
                         val updatedDocument = Document()
                             .append("id", document.getString("userId"))
-                            .append("name", document.getString("name"))
-                            .append("discriminator", document.getString("discriminator"))
-                            .append("avatar", document.getString("avatar"))
                             .append("badges", document.getList("badges", String::class.java))
                             .append("birthday", null)
                             .append("achievements", DbAchievements())
