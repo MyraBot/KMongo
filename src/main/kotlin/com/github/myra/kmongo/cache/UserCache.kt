@@ -16,10 +16,9 @@ val dbUsers = cache<String, DbUser> {
         val user = Diskord.getUser(it).awaitNonNull()
         DbUser(
             id = it,
-            name = user.username,
-            discriminator = user.discriminator,
-            avatar = user.avatar,
             badges = mutableListOf(),
+            xp = 0L,
+            messages = 0L,
             birthday = null,
             achievements = DbAchievements(
                 inviteMyra = false
