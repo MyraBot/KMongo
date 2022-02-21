@@ -2,6 +2,8 @@ package com.github.myra.kmongo
 
 import com.github.myra.kmongo.data.user.DbAchievements
 import com.mongodb.client.model.Filters
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
@@ -114,11 +116,11 @@ object MongoUpdater {
                             .append("directMessage", Document()
                                 .append("toggled", false)
                                 .append("message",
-                                        if (welcomeDoc.getString("welcomeDirectMessage") == "Welcome {user} to {server}! Enjoy your stay") null else welcomeDoc.getString("welcomeDirectMessage")))
+                                    if (welcomeDoc.getString("welcomeDirectMessage") == "Welcome {user} to {server}! Enjoy your stay") null else welcomeDoc.getString("welcomeDirectMessage")))
                             .append("embed", Document()
                                 .append("toggled", false)
                                 .append("message",
-                                        if (welcomeDoc.getString("welcomeEmbedMessage") == "Welcome {user} to {server}! Enjoy your stay") null else welcomeDoc.getString("welcomeEmbedMessage"))
+                                    if (welcomeDoc.getString("welcomeEmbedMessage") == "Welcome {user} to {server}! Enjoy your stay") null else welcomeDoc.getString("welcomeEmbedMessage"))
                                 .append("colour", welcomeDoc.getString("welcomeColour")))
                             .append("image", Document()
                                 .append("toggled", false)
@@ -178,8 +180,9 @@ object MongoUpdater {
         val docs: MutableSet<Document> = mutableSetOf()
         val members = mutableListOf<Document>()
         val collection = KMongo.createClient(Mongo.connectionString).getDatabase("Myra").getCollection("users")
+        val jobs = mutableListOf<Job>()
         for (run in 0..runs) {
-            Mongo.coroutineScope.launch {
+            jobs.add(Mongo.coroutineScope.launch {
                 println("Started coroutine #$run")
                 collection
                     .find(Document())
@@ -192,6 +195,8 @@ object MongoUpdater {
                         val updatedDocument = Document()
                             .append("id", document.getString("userId"))
                             .append("badges", document.getList("badges", String::class.java))
+                            .append("xp", getLong(document, "xp"))
+                            .append("messages", getLong(document, "messages"))
                             .append("birthday", null)
                             .append("achievements", DbAchievements())
 
@@ -216,42 +221,42 @@ object MongoUpdater {
                             }
                         }
 
-                        // Print out progress
-                        val percent = (passedDocuments.toDouble() / documentCount) * 100
-                        println("Updating Users... Status: ${percent.toInt()}% ($passedDocuments/$documentCount)")
-
                         // If my own document comes put it on the top of the list
                         if (updatedDocument.getString("name") == "not set") return@collect
                         //Mongo.get("users").insertOne(updatedDocument)
                         if (updatedDocument.getString("id") == "639544573114187797") {
+                            println("FOUND MARIAN")
                             val toMutableList = docs.toMutableList()
                             docs.clear()
                             docs.add(updatedDocument)
                             docs.addAll(toMutableList)
                         } else {
+                            if (updatedDocument == null) {
+                                println("lol a doc is null")
+                                return@collect
+                            }
                             docs.add(updatedDocument)
                         }
 
                     }
-                if (run == runs) {
-                    println("waiting 5 secs")
-                    Timer().schedule(object : TimerTask() {
-                        override fun run() {
-                            runBlocking {
-                                Mongo.get("users").deleteMany(Filters.exists("_id")).awaitFirst()
-                                Mongo.get("members").deleteMany(Filters.exists("_id")).awaitFirst()
-
-                                Mongo.get("users").insertMany(docs.filter { !it.isEmpty() }.toList()).awaitFirst()
-                                Mongo.get("members").insertMany(members.filter { !it.isEmpty() }.toMutableList()).awaitFirst()
-                            }
-                        }
-                    }, 5000)
-
-                }
                 println("Coroutine #$run finished")
-            }
+            })
         }
+        Mongo.coroutineScope.launch {
+            while (jobs.any { it.isActive }) {
+                // Print out progress
+                val percent = (passedDocuments.toDouble() / documentCount) * 100
+                println("Updating Users... Status: ${percent.toInt()}% ($passedDocuments/$documentCount)")
+                delay(2500)
+            }
+            println(">> DONE - saving documents")
 
+            Mongo.get("users").deleteMany(Filters.exists("_id")).awaitFirst()
+            Mongo.get("members").deleteMany(Filters.exists("_id")).awaitFirst()
+
+            Mongo.get("users").insertMany(docs.filter { !it.isEmpty() }.toList()).awaitFirst()
+            Mongo.get("members").insertMany(members.filter { !it.isEmpty() }.toMutableList()).awaitFirst()
+        }
 
     }
 
