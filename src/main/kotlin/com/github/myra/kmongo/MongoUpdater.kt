@@ -222,8 +222,6 @@ object MongoUpdater {
                         }
 
                         // If my own document comes put it on the top of the list
-                        if (updatedDocument.getString("name") == "not set") return@collect
-                        //Mongo.get("users").insertOne(updatedDocument)
                         if (updatedDocument.getString("id") == "639544573114187797") {
                             println("FOUND MARIAN")
                             val toMutableList = docs.toMutableList()
